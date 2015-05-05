@@ -1,9 +1,11 @@
-package com.vodyasov.amr;
+package com.vodyasov.amr.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.vodyasov.amr.R;
 
 
 public class MainActivity extends AppCompatActivity
@@ -13,7 +15,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        if (savedInstanceState == null)
+        {
+            getFragmentManager().beginTransaction()
+                    .add(android.R.id.content, MusicFragment.newInstance(), MusicFragment.class.getName())
+                    .commit();
+        }
     }
 
     @Override
