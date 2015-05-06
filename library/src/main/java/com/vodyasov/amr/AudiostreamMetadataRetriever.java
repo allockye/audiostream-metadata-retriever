@@ -40,7 +40,7 @@ public class AudiostreamMetadataRetriever implements Runnable
         {
             throw new IllegalArgumentException("You must set Callbacks");
         }
-        if (!TextUtils.isEmpty(userAgent))
+        if (TextUtils.isEmpty(userAgent))
         {
             throw new IllegalArgumentException("User-agent must be non-empty");
         }
