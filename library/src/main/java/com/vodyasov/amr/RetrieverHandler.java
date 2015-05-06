@@ -7,16 +7,18 @@ import android.os.Message;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-class RetrieverHandler extends Handler implements Headers
+class RetrieverHandler extends Handler
 {
     public static final int ACTION_METADATA = 0;
     public static final int ACTION_HEADERS = 1;
 
-    private WeakReference<AudiostreamMetadataRetriever> ref;
+    private WeakReference<OnNewMetadataListener> ref;
+    private String mUrlString;
 
-    public RetrieverHandler(AudiostreamMetadataRetriever retriever)
+    public RetrieverHandler(String uri, OnNewMetadataListener listener)
     {
-        ref = new WeakReference<AudiostreamMetadataRetriever>(retriever);
+        mUrlString = uri;
+        ref = new WeakReference<OnNewMetadataListener>(listener);
     }
 
     @Override
@@ -24,8 +26,8 @@ class RetrieverHandler extends Handler implements Headers
     {
         super.handleMessage(msg);
 
-        AudiostreamMetadataRetriever retriever = ref.get();
-        if (retriever == null)
+        OnNewMetadataListener listener = ref.get();
+        if (listener == null)
         {
             return;
         }
@@ -34,18 +36,18 @@ class RetrieverHandler extends Handler implements Headers
             case(ACTION_METADATA):
             {
                 String streamTitle = (String) msg.obj;
-                retriever.mOnNewMetadataListener.onNewStreamTitle(retriever.mUrlString, streamTitle);
+                listener.onNewStreamTitle(mUrlString, streamTitle);
                 break;
             }
             case(ACTION_HEADERS):
             {
                 Bundle data = msg.getData();
-                List<String> name = data.getStringArrayList(KEY_NAME);
-                List<String> desc = data.getStringArrayList(KEY_DESC);
-                List<String> br = data.getStringArrayList(KEY_BR);
-                List<String> genre = data.getStringArrayList(KEY_GENRE);
-                List<String> info = data.getStringArrayList(KEY_INFO);
-                retriever.mOnNewMetadataListener.onNewHeaders(retriever.mUrlString, name, desc, br, genre, info);
+                List<String> name = data.getStringArrayList(IcecastHeader.NAME);
+                List<String> desc = data.getStringArrayList(IcecastHeader.DESC);
+                List<String> br = data.getStringArrayList(IcecastHeader.BR);
+                List<String> genre = data.getStringArrayList(IcecastHeader.GENRE);
+                List<String> info = data.getStringArrayList(IcecastHeader.INFO);
+                listener.onNewHeaders(mUrlString, name, desc, br, genre, info);
                 break;
             }
         }

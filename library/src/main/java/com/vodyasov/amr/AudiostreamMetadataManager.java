@@ -2,17 +2,26 @@ package com.vodyasov.amr;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class AudiostreamMetadataManager
 {
+    public static final String LOG_TAG = AudiostreamMetadataManager.class.getName();
+
     private static AudiostreamMetadataManager sInstance;
 
     private Thread mThread;
-    private String mUrlString;
     private boolean mIsRunning = false;
-    private OnNewMetadataListener mListener;
 
-    private AudiostreamMetadataManager() {}
+    private String mUrlString;
+    private OnNewMetadataListener mListener;
+    private String mUserAgent;
+
+    private AudiostreamMetadataManager()
+    {
+        mUserAgent = UserAgent.VLC.toString();
+    }
+
     public static AudiostreamMetadataManager getInstance()
     {
         if (sInstance == null)
@@ -34,7 +43,19 @@ public class AudiostreamMetadataManager
         return this;
     }
 
-    public AudiostreamMetadataManager setCallbacks(OnNewMetadataListener listener)
+    public AudiostreamMetadataManager setUserAgent(String userAgent)
+    {
+        mUserAgent = userAgent;
+        return this;
+    }
+
+    public AudiostreamMetadataManager setUserAgent(UserAgent userAgent)
+    {
+        mUserAgent = userAgent.toString();
+        return this;
+    }
+
+    public AudiostreamMetadataManager setOnNewMetadataListener(OnNewMetadataListener listener)
     {
         mListener = listener;
         return this;
@@ -42,14 +63,18 @@ public class AudiostreamMetadataManager
 
     public void start()
     {
-        if (!TextUtils.isEmpty(mUrlString) && mListener != null)
+        if (!TextUtils.isEmpty(mUrlString) && !TextUtils.isEmpty(mUserAgent) && mListener != null)
         {
             //stop previous task if running
             stop();
 
-            mThread = new Thread(new AudiostreamMetadataRetriever(mUrlString, mListener));
+            mThread = new Thread(new AudiostreamMetadataRetriever(mUrlString, mListener, mUserAgent));
             mThread.start();
             mIsRunning = true;
+        }
+        else
+        {
+            Log.e(LOG_TAG, "Error.");
         }
     }
 

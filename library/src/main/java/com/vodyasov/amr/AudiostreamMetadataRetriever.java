@@ -17,21 +17,20 @@ import java.util.List;
 import java.util.Map;
 
 
-public class AudiostreamMetadataRetriever implements Runnable, Headers
+public class AudiostreamMetadataRetriever implements Runnable
 {
     public static final String TAG = AudiostreamMetadataRetriever.class.getSimpleName();
 
     private final Handler mHandler;
-    final String mUrlString;
-    final OnNewMetadataListener mOnNewMetadataListener;
-    private UserAgent mUserAgent;
+    private final String mUrlString;
+    private final String mUserAgent;
 
     public AudiostreamMetadataRetriever(String urlString, OnNewMetadataListener listener)
     {
-        this(urlString, listener, UserAgent.VLC);
+        this(urlString, listener, UserAgent.VLC.toString());
     }
 
-    public AudiostreamMetadataRetriever(String urlString, OnNewMetadataListener listener, UserAgent agent)
+    public AudiostreamMetadataRetriever(String urlString, OnNewMetadataListener listener, String userAgent)
     {
         if (TextUtils.isEmpty(urlString))
         {
@@ -41,10 +40,14 @@ public class AudiostreamMetadataRetriever implements Runnable, Headers
         {
             throw new IllegalArgumentException("You must set Callbacks");
         }
+        if (!TextUtils.isEmpty(userAgent))
+        {
+            throw new IllegalArgumentException("User-agent must be non-empty");
+        }
+
         mUrlString = urlString;
-        mOnNewMetadataListener = listener;
-        mUserAgent = agent;
-        mHandler = new RetrieverHandler(this);
+        mUserAgent = userAgent;
+        mHandler = new RetrieverHandler(mUrlString, listener);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class AudiostreamMetadataRetriever implements Runnable, Headers
         try
         {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("User-Agent", mUserAgent.toString());
+            urlConnection.setRequestProperty("User-Agent", mUserAgent);
             urlConnection.setRequestProperty("Icy-MetaData", "1");
             urlConnection.connect();
         }
@@ -80,16 +83,16 @@ public class AudiostreamMetadataRetriever implements Runnable, Headers
 
         Map<String, List<String>> headers = urlConnection.getHeaderFields();
         Bundle headers_data = new Bundle();
-        headers_data.putStringArrayList(KEY_NAME,
-                headers.get(KEY_NAME) != null ? new ArrayList<String>(headers.get(KEY_NAME)): new ArrayList<String>());
-        headers_data.putStringArrayList(KEY_DESC,
-                headers.get(KEY_DESC) != null ? new ArrayList<String>(headers.get(KEY_DESC)): new ArrayList<String>());
-        headers_data.putStringArrayList(KEY_BR,
-                headers.get(KEY_BR) != null ? new ArrayList<String>(headers.get(KEY_BR)): new ArrayList<String>());
-        headers_data.putStringArrayList(KEY_GENRE,
-                headers.get(KEY_GENRE) != null ? new ArrayList<String>(headers.get(KEY_GENRE)): new ArrayList<String>());
-        headers_data.putStringArrayList(KEY_INFO,
-                headers.get(KEY_INFO) != null ? new ArrayList<String>(headers.get(KEY_INFO)): new ArrayList<String>());
+        headers_data.putStringArrayList(IcecastHeader.NAME,
+                headers.get(IcecastHeader.NAME) != null ? new ArrayList<String>(headers.get(IcecastHeader.NAME)): new ArrayList<String>());
+        headers_data.putStringArrayList(IcecastHeader.DESC,
+                headers.get(IcecastHeader.DESC) != null ? new ArrayList<String>(headers.get(IcecastHeader.DESC)): new ArrayList<String>());
+        headers_data.putStringArrayList(IcecastHeader.BR,
+                headers.get(IcecastHeader.BR) != null ? new ArrayList<String>(headers.get(IcecastHeader.BR)): new ArrayList<String>());
+        headers_data.putStringArrayList(IcecastHeader.GENRE,
+                headers.get(IcecastHeader.GENRE) != null ? new ArrayList<String>(headers.get(IcecastHeader.GENRE)): new ArrayList<String>());
+        headers_data.putStringArrayList(IcecastHeader.INFO,
+                headers.get(IcecastHeader.INFO) != null ? new ArrayList<String>(headers.get(IcecastHeader.INFO)): new ArrayList<String>());
         Message headers_msg = Message.obtain();
         headers_msg.what = RetrieverHandler.ACTION_HEADERS;
         headers_msg.setData(headers_data);
