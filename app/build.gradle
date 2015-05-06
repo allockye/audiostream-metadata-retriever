@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.vodyasov.amr"
+        applicationId "com.vodyasov.amrsample"
         minSdkVersion 11
         targetSdkVersion 22
         versionCode 1

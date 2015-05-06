@@ -1,4 +1,4 @@
-package com.vodyasov.amr.service.util;
+package com.vodyasov.amrsample.service.util;
 
 import android.net.Uri;
 

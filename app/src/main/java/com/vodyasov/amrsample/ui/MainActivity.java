@@ -1,11 +1,11 @@
-package com.vodyasov.amr.ui;
+package com.vodyasov.amrsample.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.vodyasov.amr.R;
+import com.vodyasov.amrsample.R;
 
 
 public class MainActivity extends AppCompatActivity

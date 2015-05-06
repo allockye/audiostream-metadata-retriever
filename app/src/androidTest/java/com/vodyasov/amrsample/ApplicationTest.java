@@ -1,4 +1,4 @@
-package com.vodyasov.amr;
+package com.vodyasov.amrsample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
