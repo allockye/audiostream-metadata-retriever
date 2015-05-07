@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'bintray-release'
 
 android {
     compileSdkVersion 22
@@ -20,4 +21,15 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+publish {
+    userOrg = 'vsmaks'
+    groupId = 'com.vodyasov'
+    artifactId = 'amr'
+    version = '0.5'
+    description = 'This is an android-library which allow you to retrieve metadata from audiostream.'
+    website = 'https://github.com/vsmaks/audiostream-metadata-retriever'
+    issueTracker = "${website}/issues"
+    repository = "${website}.git"
 }
