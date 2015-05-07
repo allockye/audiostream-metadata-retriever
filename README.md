@@ -1,11 +1,11 @@
 # audiostream-metadata-retriever
 
-This library allow you to retrieve metadata such as title and headers of audiostream as soon as possible.
+This is an android-library which allow you to retrieve metadata such as title and headers of audiostream as soon as possible.
 
 ### Support protocols
  - Icecast
  - Shoutcast wil be added later
- 
+
 ## How to use
 ```
 //set uri of your favourite audiostream
@@ -33,6 +33,10 @@ AudiostreamMetadataManager.getInstance()
 AudiostreamMetadataManager.getInstance().stop();
 ```
 *See [screenshots](/screenshots) and [sample](/app).*
+
+### Support android APIs
+- library: API 8+
+- sample:  API 14+
 
 ---
 ## Gradle
