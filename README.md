@@ -40,4 +40,8 @@ AudiostreamMetadataManager.getInstance().stop();
 
 ---
 ## Gradle
-Coming soon
+```
+dependencies {
+    compile 'com.vodyasov:amr:0.5'
+}
+```
