@@ -1,5 +1,7 @@
 # audiostream-metadata-retriever
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-audiostream--metadata--retriever-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1774)
+
 This is an android-library which allow you to retrieve metadata such as title and headers of audiostream as soon as possible.
 
 ### Support protocols
