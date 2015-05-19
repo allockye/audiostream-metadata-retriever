@@ -1,5 +1,7 @@
 # audiostream-metadata-retriever
 
+[![Build Status](https://travis-ci.org/vsmaks/audiostream-metadata-retriever.svg)](https://travis-ci.org/vsmaks/audiostream-metadata-retriever)
+[![Download](https://api.bintray.com/packages/vsmaks/maven/amr/images/download.svg) ](https://bintray.com/vsmaks/maven/amr/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-audiostream--metadata--retriever-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1774)
 
 This is an android-library which allow you to retrieve metadata such as title and headers of audiostream as soon as possible.
@@ -34,7 +36,11 @@ AudiostreamMetadataManager.getInstance()
 //Stop parsing
 AudiostreamMetadataManager.getInstance().stop();
 ```
-*See [screenshots](/screenshots) and [sample](/app).*
+![](screenshots/device-2015-05-19-022753.png)
+![](screenshots/device-2015-05-07-035223.png)
+![](screenshots/device-2015-05-07-034849.png)
+
+*See [sample](/app).*
 
 ### Support android APIs
 - library: API 8+
@@ -47,6 +53,17 @@ dependencies {
     compile 'com.vodyasov:amr:0.5'
 }
 ```
+If jCenter is having issues (the library can't be resolved), add this to your app's build.gradle file:
+```
+repositories {
+    maven {
+        url  "http://dl.bintray.com/vsmaks/maven" 
+    }
+}
+```
+
+## Apps that uses this library
+* [RS Music](https://play.google.com/store/apps/details?id=com.vodyasov.rsmusic)
 
 ## License
 
