@@ -66,6 +66,7 @@ public class AudiostreamMetadataRetriever implements Runnable
         }
 
         HttpURLConnection urlConnection = null;
+
         try
         {
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -80,8 +81,10 @@ public class AudiostreamMetadataRetriever implements Runnable
             return;
         }
 
-
         Map<String, List<String>> headers = urlConnection.getHeaderFields();
+
+        if(headers == null) return;
+
         Bundle headers_data = new Bundle();
         headers_data.putStringArrayList(IcecastHeader.NAME,
                 headers.get(IcecastHeader.NAME) != null ? new ArrayList<String>(headers.get(IcecastHeader.NAME)): new ArrayList<String>());
